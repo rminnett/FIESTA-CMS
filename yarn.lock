@@ -2429,6 +2429,13 @@
   dependencies:
     zod "^3.14.3"
 
+"@tinacms/schema-tools@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@tinacms/schema-tools/-/schema-tools-0.1.6.tgz#934068929947a8eb9a823e566c705e9211dcdb34"
+  integrity sha512-R4LLy+whqAaU3W5mKAyhv+yD/09bJlxaFBd6sEpe0tKnxM4Qnk8DqhM8lO7QIJJR99wp4aAeslESQUEJk8oksQ==
+  dependencies:
+    zod "^3.14.3"
+
 "@tinacms/scripts@0.51.1":
   version "0.51.1"
   resolved "https://registry.yarnpkg.com/@tinacms/scripts/-/scripts-0.51.1.tgz#4ea3df5c8e08e47260d6c3e06694023010a4eea1"
