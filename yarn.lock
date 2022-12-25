@@ -7725,7 +7725,6 @@ react-dropzone@12.1.0:
     file-selector "^0.5.0"
     prop-types "^15.8.1"
 
-
 react-final-form@^6.3.0:
   version "6.5.9"
   resolved "https://registry.yarnpkg.com/react-final-form/-/react-final-form-6.5.9.tgz#644797d4c122801b37b58a76c87761547411190b"
@@ -8876,7 +8875,6 @@ tinacms@^0.69.14:
     react-router-dom "6"
     url-pattern "^1.0.3"
     yup "^0.32.0"
-
 
 tiny-invariant@1.0.6:
   version "1.0.6"

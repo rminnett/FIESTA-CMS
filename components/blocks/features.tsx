@@ -3,6 +3,22 @@ import { Section } from "../util/section";
 import { Container } from "../util/container";
 import { Icon } from "../util/icon";
 import { iconSchema } from "../util/icon";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import type { Components } from "tinacms/dist/rich-text";
+
+const components: Components<{
+  Superscript: {
+    value: string;
+  };
+}> = {
+  Superscript: (props: {
+    value: string;
+  }) => {
+    return (
+      <sup>{props.value}</sup>
+    );
+  }
+};
 
 export const Feature = ({ featuresColor, data, tinaField }) => {
   return (
@@ -27,12 +43,12 @@ export const Feature = ({ featuresColor, data, tinaField }) => {
         </h3>
       )}
       {data.text && (
-        <p
+        <div
           data-tinafield={`${tinaField}.text`}
           className="text-base opacity-80 leading-relaxed"
         >
-          {data.text}
-        </p>
+          <TinaMarkdown components={components} content={data.text} />
+        </div>
       )}
       {data.actions && <Actions actions={data.actions} />}
     </div>
@@ -105,12 +121,25 @@ export const featureBlockSchema = {
           name: "title",
         },
         {
-          type: "string",
+          type: "rich-text",
           label: "Text",
           name: "text",
-          ui: {
-            component: "textarea",
-          },
+          templates: [
+            {
+              name: "Superscript",
+              label: "Superscript",
+              inline: true,
+              fields: [
+                {
+                  type: "string",
+                  label: "Value",
+                  name: "value",
+                  required: true,
+                  isTitle: true,
+                },
+              ],
+            }
+          ],
         },
       ],
     },

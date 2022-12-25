@@ -11,7 +11,7 @@ export const Header = ({ data }) => {
 
   const headerColor = {
     default:
-      "text-black dark:text-white from-gray-50 to-white dark:from-gray-800 dark:to-gray-900",
+      "text-white bg-gray-1000",
     primary: {
       blue: "text-white from-blue-300 to-blue-500",
       teal: "text-white from-teal-400 to-teal-500",
@@ -72,16 +72,10 @@ export const Header = ({ data }) => {
         <div className="flex items-center justify-between gap-6">
           <h4 className="select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform">
             <Link href="/" passHref>
-              <a className="flex gap-1 items-center whitespace-nowrap tracking-[.002em]">
-                <Icon
-                  parentColor={data.color}
-                  data={{
-                    name: data.icon.name,
-                    color: data.icon.color,
-                    style: data.icon.style,
-                  }}
-                />
-                {data.name}
+              <a className="flex items-center">
+                <img src="/logo.png" />
+                {" "}
+                {data.title}
               </a>
             </Link>
           </h4>
@@ -90,8 +84,9 @@ export const Header = ({ data }) => {
               data.nav.map((item, i) => {
                 const activeItem =
                   item.href === ""
-                    ? router.asPath === "/"
-                    : router.asPath.includes(item.href);
+                    ? typeof location !== "undefined" &&
+                    location.pathname == "/"
+                    : windowUrl.includes(item.href);
                 return (
                   <li
                     key={`${item.label}-${i}`}
@@ -151,9 +146,8 @@ export const Header = ({ data }) => {
           </ul>
         </div>
         <div
-          className={`absolute h-1 bg-gradient-to-r from-transparent ${
-            data.color === "primary" ? `via-white` : `via-black dark:via-white`
-          } to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
+          className={`absolute h-1 bg-gradient-to-r from-transparent ${data.color === "primary" ? `via-white` : `via-black dark:via-white`
+            } to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
         />
       </Container>
     </div>
