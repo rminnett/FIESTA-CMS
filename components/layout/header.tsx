@@ -3,15 +3,18 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
 import { useTheme } from ".";
+import logo from "../../public/logo.png";
+import Image from "next/image";
 import { Icon } from "../util/icon";
 
 export const Header = ({ data }) => {
   const router = useRouter();
   const theme = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const headerColor = {
     default:
-      "text-white bg-gray-1000",
+      "text-white bg-mono-900",
     primary: {
       blue: "text-white from-blue-300 to-blue-500",
       teal: "text-white from-teal-400 to-teal-500",
@@ -64,48 +67,41 @@ export const Header = ({ data }) => {
     }
   }, []);
 
-  return (
+  const HorizontalHeader = ({ fixed = false }) => (
     <div
-      className={`relative overflow-hidden bg-gradient-to-b ${headerColorCss}`}
+      className={`${fixed && 'fixed'} z-50 w-full overflow-hidden bg-gradient-to-b ${headerColorCss}`}
     >
-      <Container size="custom" className="py-0 relative z-10 max-w-8xl">
-        <div className="flex items-center justify-between gap-6">
-          <h4 className="select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform">
+      <Container size="custom" className="py-0">
+        <div className="flex items-center justify-between gap-10">
+          <div className="select-none shrink-0 transition duration-150 ease-out transform">
             <Link href="/" passHref>
-              <a className="flex items-center">
-                <img src="/logo.png" />
-                {" "}
-                {data.title}
-              </a>
+              <a><Image src={logo} /></a>
             </Link>
-          </h4>
-          <ul className="flex gap-6 sm:gap-8 lg:gap-10 tracking-[.002em] -mx-4">
+          </div>
+          <ul className="grow flex gap-4 tracking-[.002em] -mx-4">
             {data.nav &&
               data.nav.map((item, i) => {
                 const activeItem =
-                  item.href === ""
-                    ? typeof location !== "undefined" &&
-                    location.pathname == "/"
-                    : windowUrl.includes(item.href);
+                  item.href === "" || item.href === "/"
+                    ? router.asPath === "/"
+                    : router.asPath.includes(item.href);
                 return (
                   <li
                     key={`${item.label}-${i}`}
-                    className={`${
-                      activeItem ? activeItemClasses[theme.color] : ""
-                    }`}
+                    className={`${activeItem ? activeItemClasses[theme.color] : 'hidden'} lg:inline-block`}
                   >
                     <Link href={`${prefix}/${item.href}`} passHref>
                       <a
-                        className={`relative select-none	text-base inline-block tracking-wide transition duration-150 ease-out hover:opacity-100 py-8 px-4 ${
-                          activeItem ? `` : `opacity-70`
-                        }`}
+                        className={`
+                          inline-block relative select-none text-base whitespace-nowrap tracking-wide transition
+                          duration-150 ease-out hover:opacity-100 py-8 px-4 ${activeItem ? `` : `opacity-70`}
+                        `}
                       >
                         {item.label}
                         {activeItem && (
                           <svg
-                            className={`absolute bottom-0 left-1/2 w-[180%] h-full -translate-x-1/2 -z-1 opacity-10 dark:opacity-15 ${
-                              activeBackgroundClasses[theme.color]
-                            }`}
+                            className={`absolute bottom-0 left-1/2 w-[180%] h-full -translate-x-1/2 -z-1 opacity-10 dark:opacity-15 ${activeBackgroundClasses[theme.color]
+                              }`}
                             preserveAspectRatio="none"
                             viewBox="0 0 230 230"
                             fill="none"
@@ -144,6 +140,9 @@ export const Header = ({ data }) => {
                 );
               })}
           </ul>
+          <div className="cursor-pointer" onClick={() => setIsMenuOpen(true)}>
+            <Icon data={{ name: "BiMenu" }} className="lg:hidden" />
+          </div>
         </div>
         <div
           className={`absolute h-1 bg-gradient-to-r from-transparent ${data.color === "primary" ? `via-white` : `via-black dark:via-white`
@@ -151,5 +150,86 @@ export const Header = ({ data }) => {
         />
       </Container>
     </div>
+  );
+
+  const VericalHeader = () => (
+    <div className={`${!isMenuOpen && 'hidden'} fixed z-50 right-0 h-full bg-gradient-to-b ${headerColorCss}`}>
+      <div className="flex items-center justify-between gap-10">
+        <div className="cursor-pointer" onClick={() => setIsMenuOpen(false)}>
+          <Icon data={{ name: "BiX" }} className="lg:hidden" />
+        </div>
+        <ul className="grow flex gap-4 tracking-[.002em] -mx-4">
+          {data.nav &&
+            data.nav.map((item, i) => {
+              const activeItem =
+                item.href === "" || item.href === "/"
+                  ? router.asPath === "/"
+                  : router.asPath.includes(item.href);
+              return (
+                <li
+                  key={`${item.label}-${i}`}
+                  className={`${activeItem ? activeItemClasses[theme.color] : 'hidden'} lg:inline-block`}
+                >
+                  <Link href={`${prefix}/${item.href}`} passHref>
+                    <a
+                      className={`
+                          inline-block relative select-none text-base whitespace-nowrap tracking-wide transition
+                          duration-150 ease-out hover:opacity-100 py-8 px-4 ${activeItem ? `` : `opacity-70`}
+                        `}
+                    >
+                      {item.label}
+                      {activeItem && (
+                        <svg
+                          className={`absolute bottom-0 left-1/2 w-[180%] h-full -translate-x-1/2 -z-1 opacity-10 dark:opacity-15 ${activeBackgroundClasses[theme.color]
+                            }`}
+                          preserveAspectRatio="none"
+                          viewBox="0 0 230 230"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="230"
+                            y="230"
+                            width="230"
+                            height="230"
+                            transform="rotate(-180 230 230)"
+                            fill="url(#paint0_radial_1_33)"
+                          />
+                          <defs>
+                            <radialGradient
+                              id="paint0_radial_1_33"
+                              cx="0"
+                              cy="0"
+                              r="1"
+                              gradientUnits="userSpaceOnUse"
+                              gradientTransform="translate(345 230) rotate(90) scale(230 115)"
+                            >
+                              <stop stopColor="currentColor" />
+                              <stop
+                                offset="1"
+                                stopColor="currentColor"
+                                stopOpacity="0"
+                              />
+                            </radialGradient>
+                          </defs>
+                        </svg>
+                      )}
+                    </a>
+                  </Link>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+    </div>
+  );
+      
+  return (
+    <>
+      <input id="vertical-header" type="checkbox" className="drawer-toggle" />
+      <HorizontalHeader />
+      <HorizontalHeader fixed />
+      <VericalHeader />
+    </>
   );
 };

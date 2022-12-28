@@ -1,5 +1,6 @@
 {
   "header": {
+    "name": "OSU Argon Geochronology Lab",
     "color": "default",
     "nav": [
       {
@@ -43,7 +44,11 @@
   "theme": {
     "color": "orange",
     "font": "sans",
-    "icon": "heroicon",
     "darkMode": "light"
-  }
+  },
+  "_collection": "global",
+  "_keepTemplateKey": false,
+  "_template": "global",
+  "_relativePath": "index.json",
+  "_id": "content/global/index.json"
 }

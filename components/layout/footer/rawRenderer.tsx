@@ -46,7 +46,7 @@ export const RawRenderer = ({ rawData, parentColor }) => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-50 overflow-y-auto"
           onClose={closeModal}
         >
           <div className="min-h-screen max-h-screen px-4 py-12 text-center flex flex-col items-center justify-center">
@@ -73,16 +73,22 @@ export const RawRenderer = ({ rawData, parentColor }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="flex-1 w-full prose dark:prose-dark max-w-3xl p-6 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-gray-1000 shadow-xl rounded-xl inline-flex flex-col max-h-full">
+              <div className="
+                flex-1 w-full prose dark:prose-dark max-w-3xl p-6 overflow-hidden text-left
+                align-middle transition-all transform bg-white dark:bg-gray-1000 shadow-xl
+                rounded-xl inline-flex flex-col max-h-full
+              ">
                 <pre className="flex-1 overflow-y-auto">
                   <code>{JSON.stringify(rawData, null, 2)}</code>
                 </pre>
                 <button
                   type="button"
-                  className="flex-0 font-semibold text-lg transition duration-150 ease-out opacity-80 hover:opacity-100"
+                  className={`flex-0 font-semibold text-lg transition duration-150 ease-out opacity-80 hover:opacity-100 ${
+                    buttonColorClasses[theme.color]
+                  }`}
                   onClick={closeModal}
                 >
-                  Great, thanks!
+                  Close
                 </button>
               </div>
             </Transition.Child>

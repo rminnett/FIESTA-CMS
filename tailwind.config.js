@@ -3,7 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   mode: "jit",
-  purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     colors: {
@@ -17,6 +17,7 @@ module.exports = {
       purple: colors.purple,
       pink: colors.pink,
       yellow: colors.yellow,
+      mono: colors.neutral,
       gray: {
         50: "#F6F6F9",
         100: "#EDECF3",
@@ -156,7 +157,7 @@ module.exports = {
         },
         dark: {
           css: {
-            color: theme("colors.gray.200"),
+            color: theme("colors.gray.800"),
             '[class~="lead"]': { color: theme("colors.gray.400") },
             a: { color: theme("colors.gray.100") },
             strong: { color: theme("colors.gray.100") },
@@ -224,5 +225,5 @@ module.exports = {
   variants: {
     extend: { typography: ["tint", "dark", "primary"] },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
 };
