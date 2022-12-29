@@ -34,6 +34,7 @@ export const Layout = ({ rawData = {}, data = layoutData, children }) => {
       </Head>
       <Theme data={data?.theme}>
         <div
+          data-theme="osu"
           className={`min-h-screen flex flex-col ${
             data.theme.font === "nunito" && "font-nunito"
           } ${data.theme.font === "lato" && "font-lato"} ${

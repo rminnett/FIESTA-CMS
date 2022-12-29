@@ -5,62 +5,14 @@ import { Container } from "../util/container";
 import { useTheme } from ".";
 import logo from "../../public/logo.png";
 import Image from "next/image";
-import { Icon } from "../util/icon";
+import { BiMenu as MenuIcon } from "react-icons/bi";
 
 export const Header = ({ data }) => {
   const router = useRouter();
   const theme = useTheme();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  const headerColor = {
-    default:
-      "text-white bg-mono-900",
-    primary: {
-      blue: "text-white from-blue-300 to-blue-500",
-      teal: "text-white from-teal-400 to-teal-500",
-      green: "text-white from-green-400 to-green-500",
-      red: "text-white from-red-400 to-red-500",
-      pink: "text-white from-pink-400 to-pink-500",
-      purple: "text-white from-purple-400 to-purple-500",
-      orange: "text-white from-orange-400 to-orange-500",
-      yellow: "text-white from-yellow-400 to-yellow-500",
-    },
-  };
-
-  const headerColorCss =
-    data.color === "primary"
-      ? headerColor.primary[theme.color]
-      : headerColor.default;
-
-  const activeItemClasses = {
-    blue: "border-b-3 border-blue-200 text-blue-700 dark:text-blue-300 font-medium dark:border-blue-700",
-    teal: "border-b-3 border-teal-200 text-teal-700 dark:text-teal-300 font-medium dark:border-teal-700",
-    green:
-      "border-b-3 border-green-200 text-green-700 dark:text-green-300 font-medium dark:border-green-700",
-    red: "border-b-3 border-red-300 text-red-700 dark:text-green-300 font-medium dark:border-red-700",
-    pink: "border-b-3 border-pink-200 text-pink-700 dark:text-pink-300 font-medium dark:border-pink-700",
-    purple:
-      "border-b-3 border-purple-200 text-purple-700 dark:text-purple-300 font-medium dark:border-purple-700",
-    orange:
-      "border-b-3 border-orange-200 text-orange-700 dark:text-orange-300 font-medium dark:border-orange-700",
-    yellow:
-      "border-b-3 border-yellow-300 text-yellow-700 dark:text-yellow-300 font-medium dark:border-yellow-600",
-  };
-
-  const activeBackgroundClasses = {
-    blue: "text-blue-500",
-    teal: "text-teal-500",
-    green: "text-green-500",
-    red: "text-red-500",
-    pink: "text-pink-500",
-    purple: "text-purple-500",
-    orange: "text-orange-500",
-    yellow: "text-yellow-500",
-  };
 
   // If we're on an admin path, other links should also link to their admin paths
   const [prefix, setPrefix] = React.useState("");
-
   React.useEffect(() => {
     if (window && window.location.pathname.startsWith("/admin")) {
       setPrefix("/admin");
@@ -226,10 +178,69 @@ export const Header = ({ data }) => {
       
   return (
     <>
-      <input id="vertical-header" type="checkbox" className="drawer-toggle" />
-      <HorizontalHeader />
-      <HorizontalHeader fixed />
-      <VericalHeader />
+      <div className="fixed z-50 drawer drawer-end lg:hidden">
+        <input id="side-menu" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">
+          <div className="navbar bg-neutral-900 lg:hidden">
+            <div className="navbar-start">
+              <Link href="/" passHref>
+                <a><Image src={logo} /></a>
+              </Link>
+            </div>
+            <div className="navbar-end">
+              <label tabIndex={0} htmlFor="side-menu" className="drawer-button btn btn-primary btn-link">
+                <MenuIcon fontSize="4em" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="drawer-side">
+          <label htmlFor="side-menu" className="drawer-overlay"></label>
+          <ul className="menu p-4 w-80 bg-base-100 text-base-content">
+            {data.nav &&
+              data.nav.map((item, i) => {
+                const activeItem =
+                  item.href === "" || item.href === "/"
+                    ? router.asPath === "/"
+                    : router.asPath.includes(item.href);
+                return (
+                  <li>
+                    <Link href={`${prefix}/${item.href}`} passHref>
+                      <a>{item.label}</a>
+                    </Link>
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </div>
+      </div>
+      <div className="navbar bg-neutral-900 hidden lg:flex">
+        <div className="navbar-start">
+          <Link href="/" passHref>
+            <a><Image src={logo} /></a>
+          </Link>
+        </div>
+        <div className="navbar-end">
+          <ul className="menu menu-horizontal px-1">
+            {data.nav &&
+              data.nav.map((item, i) => {
+                const activeItem =
+                  item.href === "" || item.href === "/"
+                    ? router.asPath === "/"
+                    : router.asPath.includes(item.href);
+                return (
+                  <li>
+                    <Link href={`${prefix}/${item.href}`} passHref>
+                      <a>{item.label}</a>
+                    </Link>
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </div>
+      </div>
     </>
   );
 };
